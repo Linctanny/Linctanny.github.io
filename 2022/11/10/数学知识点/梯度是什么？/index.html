@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>一文带你了解梯度是什么？快来康啊！ | Linctanny's blog</title><meta name="keywords" content="数学分析,凸优化,机器学习"><meta name="author" content="Linctanny"><meta name="copyright" content="Linctanny"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="左图下降的方向是怎么来的呢？了解梯度是什么？为何负梯度方向被称为是函数下降速度最快的方向？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文带你了解梯度是什么？快来康啊！">
+<meta property="og:url" content="https://linctanny.github.io/2022/11/10/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E7%82%B9/%E6%A2%AF%E5%BA%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/index.html">
+<meta property="og:site_name" content="Linctanny&#39;s blog">
+<meta property="og:description" content="左图下降的方向是怎么来的呢？了解梯度是什么？为何负梯度方向被称为是函数下降速度最快的方向？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/Linctanny/pictures/blob/main/img/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png?raw=true">
+<meta property="article:published_time" content="2022-11-10T12:07:34.000Z">
+<meta property="article:modified_time" content="2022-11-12T05:29:44.771Z">
+<meta property="article:author" content="Linctanny">
+<meta property="article:tag" content="数学分析">
+<meta property="article:tag" content="凸优化">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/Linctanny/pictures/blob/main/img/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png?raw=true"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://linctanny.github.io/2022/11/10/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E7%82%B9/%E6%A2%AF%E5%BA%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":150},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Linctanny","link":"链接: ","source":"来源: Linctanny's blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'mediumZoom',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一文带你了解梯度是什么？快来康啊！',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-12 13:29:44'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="./mycss.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/./img/p7.jpeg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://github.com/Linctanny/pictures/blob/main/img/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png?raw=true')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Linctanny's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 链接</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></li><li><a class="site-page child" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">一文带你了解梯度是什么？快来康啊！</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-10T12:07:34.000Z" title="发表于 2022-11-10 20:07:34">2022-11-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-12T05:29:44.771Z" title="更新于 2022-11-12 13:29:44">2022-11-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%A6/%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/">知识点总结</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="一文带你了解梯度是什么？快来康啊！"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>Preface</h1>
+<p>    在学习凸优化(最优化理论)这门课时，我经常遇到梯度(gradient)这个概念，加上数学分析里面确实提了一下，脑海里只有一点点印象，就是关于如何求一个多元函数的梯度的方法，但这远远是不够的，我对它的概念还是很含糊的，以我现在所学到的东西，就知道梯度的应用是非常广泛的，比如优化里面最基本的方法梯度下降法，次梯度等内容，为此，打算再次复习一下梯度相关的内容，并记录一下。下面主要从以下几方面进行阐述(才能解释清楚梯度的几何意义)：</p>
+<ul>
+<li>方向导数的定义以及求法</li>
+<li>场的定义及分类</li>
+<li>梯度的定义以及几何意义</li>
+<li>梯度的简单性质</li>
+</ul>
+<h1>方向导数的定义以及求法</h1>
+<p>    给定一个三元函数$u=f(x,y,z)$,在$p_{0}=(x_0,y_0,z_0)$处存在所有的一阶偏导数$f_{x}^{‘}(x_0,y_0,z_0)$,$f_{y}^{’}(x_0,y_0,z_0)$,$f_{z}^{'}(x_0,y_0,z_0)$,我们知道一元函数的导数刻画了该函数在某一点的变化率，其实多元函数的偏导数也是如此，只不过它是三个特定的方向，x轴，y轴，z轴方向，那么在$R^3$中任意一个方向的函数的变化率可以刻画吗？答案是显然可以的，就是需要用到我们等下定义的方向导数。(在我看来，方向导数就是把函数在三个特定方向(x,y,z轴)上的导数进行加权组合而已，在这里挖个坑，为什么在这三个轴上的偏导，可以组合到任何一个方向上？n维是一样的道理<del>可以学过线性代数(高等代数)或者解析几何的应该都知道</del>)</p>
+<p>    先给出三维的方向导数，再进行拓展到有限维。</p>
+<blockquote>
+<p><strong>Def 1</strong>: (数学分析书上定义)设三元函数$u=f(x,y,z)$在点$p_{0}=(x_0,y_0,z_0)$的某个邻域内有定义，$l$是一条从$p_{0}=(x_0,y_0,z_0)$出发的射线，$\vec{l}=(\cos\alpha,cos\beta,cos\gamma)$是射线$l$ 的单位方向向量。在$l$上任取一点$p=(x_0+\Delta x,y_0+\Delta y,z_0+\Delta z)$,令$\rho=\sqrt{(\Delta x)^2+(\Delta y)^2+(\Delta z)^2}$,则$\Delta x=\rho cos\alpha,\Delta y=\rho cos\beta,\Delta z=\rho cos\gamma$.若极限<br>
+$$ \displaystyle \lim_{\rho\to0^+} \frac{f(x_0+\rho cos\alpha,y_0+\rho cos\beta,z_0+\rho cos\gamma)-f(x_0,y_0,z_0)}{\rho} $$<br>
+存在，则称此极限为函数u在$p_0$处沿着射线$l$的<strong>方向导数</strong>，记为$\frac{\partial f}{\partial l}\rvert_{p_0}$或$f_l^{'}(x_0,y_0,z_0)$</p>
+</blockquote>
+<ul>
+<li>(说人话版解释)：这个定义和导数，偏导数定义都是类似的，导数的定义是$\displaystyle \lim_{\Delta x\to0} \frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}$,因为导数是一维的，只有一个方向，所以不需要引入方向向量，而方向向量是有方向的，所以在分子上得加上长度在各个方向上的分解(这也意味着方向导数值是各个偏导数的分解再求和)，再距离趋于0时，极限存在，则方向导数存在。</li>
+<li>极限取右侧趋于0，是因为距离是正的，不会从左侧趋于0</li>
+</ul>
+<p>    数学里面就是喜欢在定义的时候给一个极限的形式，无论是导数，偏导数，方向导数，还是以后会学到的$Frechet$导数，都是一个这样的形式。反正我当时一看到这个定义是不知道方向导数是什么的，给你一个具体的函数，叫你按照定义去求，人都会傻掉，所以就有了下面这个定理，极其重要，它告诉了我们一个函数的方向导数是怎么求的。</p>
+<blockquote>
+<p><strong>Theorem 1</strong>:若函数$f(x,y,z)$在$p_{0}=(x,y,z)$可微，则函数$f(x,y,z)$在点$p$沿任意射线$l$的方向导数都存在，且$$f_l^{‘}(x,y,z)=f_x^{’}(x,y,z)\ cos\alpha+f_y^{‘}(x,y,z)\ cos\beta+f_z^{’}(x,y,z)\ cos\gamma $$ 其中$\cos \alpha$,$\cos \beta$,$\cos \gamma$是射线$l$的方向余弦</p>
+<blockquote>
+<p>Proof:具体证明这里就不给出了，因为很简单。事实上，只要几步就能证完.讲讲思路，首先，利用函数在一点可微，把它的定义写出来，会发现这就是方向导数定义的分子，然后再除以模长，取个极限，就得到了结果，当然这里得注意一下，方向导数是右趋于0，可微定义里的是趋于0，但影响不大.</p>
+</blockquote>
+</blockquote>
+<ul>
+<li>&quot;所谓&quot;的方向余弦就是那个射线方向的单位方向向量，只不过使用余弦表示而已，$\alpha$,$\beta$,$\gamma$是射线与各个坐标轴的夹角，从这个角度来看，偏导数乘以夹角余弦就是在往射线方向进行分解罢了。</li>
+<li>多元函数的可微是一个非常强的条件，我们在一元情况下的,可微与可导是等价的，但是在多元情况下，偏导数存在，多元函数连续，甚至于任意方向的方向导数存在都无法说明多元函数可微，可见可微是很强的，但我们在这里给出一个多元函数可微的充分条件，偏导数存在，且连续即可(具体证明可以查找数学分析书籍，都有的)。</li>
+</ul>
+<p>    三维情形即三元函数的方向导数我们已经知道了定义以及求法，那n元函数的方向导数和求法是可以同样类比地得到，在这就只给出相应的结论.</p>
+<blockquote>
+<p><strong>Def 2</strong>: (数学分析书上定义)设点$p=(x_1,x_2\dots x_n)$,$p_{0}=(x_1^0,x_2^0\dots x_n^0)$,n元函数$u=f§$在$p_0$的某个邻域内有定义，$\vec{v}=(\cos \theta_1,\cos \theta_2\dots \cos \theta_n)$是一个单位向量,$cos \theta_i$是$v$的第$i$个方向余弦。若极限<br>
+$$ \displaystyle \lim_{\rho\to0^+} \frac{f(p_0+\rho v)-f(p_0)}{\rho} $$<br>
+存在，则称此极限为函数$u=f§$在$p_0$处沿着方向$v$的<strong>方向导数</strong>，记为$\frac{\partial f}{\partial v}\rvert_{p_0}$或$f_v^{'}(p_0)$.</p>
+</blockquote>
+<blockquote>
+<p><strong>Theorem 2</strong>:若$p_{0}=(x_1^0,x_2^0\dots x_n^0) \in R^n$,n元函数<br>
+$u$在$p_{0}$可微，则函数$f§$在点$p_0$沿单位向量$\vec{v}=(\cos \theta_1,\cos \theta_2\dots \cos \theta_n)$的方向导数都存在，且$$ \displaystyle f_v^{‘}(p_0)=\sum_{i=1}^n f_{x_i}^{’}(p_0)\ cos\theta_i$$</p>
+</blockquote>
+<h1>场的定义及分类</h1>
+<blockquote>
+<p><strong>Def 3</strong>:物理学中，一些量在空间中的分布叫做场，场包括数量场和向量场。</p>
+</blockquote>
+<p>    场的分类是看该在空间中分布的物理量是标量还是矢量，如果是标量，则该场叫做数量场，在数学上的形式是一个多元函数；而如果是矢量，则该场叫做向量场，在数学上的形式是向量值函数。例如，密度场，温度场都是数量场，密度和温度都是标量；而引力场，速度场，磁场是向量场，引力，速度，磁场线都是矢量，是有方向的</p>
+<h1>梯度的定义以及几何意义</h1>
+<blockquote>
+<p><strong>Def 4</strong>: $设D\subset R^2为开集，(x_0,y_0) \in D 为一定点.如果函数z=f(x,y)在(x_0,y_0)点可偏导，则称向量(f_x(x_0,y_0),f_y(x_0,y_0))为f在点(x_0,y_0)的梯度，记为$<strong>grad</strong>$f(x_0,y_0)$，即$$ gradf(x_0,y_0)=f_x(x_0,y_0)i+f_y(x_0,y_0)j.<br>
+$$</p>
+</blockquote>
+<p>    现在我们知道梯度是什么了，那么为什么下图中梯度的负方向是下山最快的方向呢？<br>
+<img src="https://github.com/Linctanny/pictures/blob/main/img/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png?raw=true "><br>
+  梯度从计算公式上来看就是一个多元函数分别对其自变量求偏导，组合在一起而形成的一个向量，故梯度实际上是一个向量场。<br>
+  我们回顾一下一个多元函数$u=f(x,y)$在点$p_0$的沿任意一个方向$v$的方向导数，且$|\vert v||=1$,即它的方向向量是单位方向向量，故有下式成立：<br>
+$$<br>
+\begin{equation}<br>
+\begin{split}<br>
+\frac{gradf}{\partial v}(x_0,y_0) &amp;=f_x^{‘}(x_0,y_0)\cos \theta_1+f_y^{’}(x_0,y_0)\cos\theta_2 =gradf \bullet v \\<br>
+&amp;=||grad f||||v||\cos(gradf,v)  \\<br>
+&amp;= ||gradf||\cos(gradf,v)<br>
+\end{split}<br>
+\nonumber<br>
+\end{equation}<br>
+$$<br>
+    由上式子可以看出，函数$f$在其任何一个可微点的方向导数的绝对值不会超过它在改点的梯度的模长，且最大值$||grad f||$在它的梯度方向达到。这就是说，沿着梯度方向函数值增加地最快,同样，$f$的方向导数的最小值$-||grad f||$ 在梯度的反方向达到，或者说，沿着梯度的相反方向函数值减少地最快。在梯度下降法中，就是时刻地选取函数的负梯度方向进行变化，使得函数尽快地达到最小值。(这点我们以后可以继续谈到)<br>
+  我们这里定义的只是一个二元函数，事实上，对于一个n元函数，该定义可以完全类推过去，也是求偏导，然后组合成一个向量(前提肯定也要所有的偏导数存在啦)</p>
+<h1>梯度的简单性质</h1>
+<p>    梯度的简单性质，在某种程度上来说，就是导数的性质的变种，它主要有以下4个性质：</p>
+<ol>
+<li>$若f\equiv c (c是一个常数)$，则$gradf=\vec{0}$;</li>
+<li>$\alpha,\beta为常数，则grad(\alpha f+\beta g)=\alpha gradf+\beta grad g $;</li>
+<li>$grad(f\bullet g)=f\bullet gradg+g \bullet gradf$;</li>
+<li>$\displaystyle grad\frac{f}{g}=\frac{g\bullet grad f-f\bullet grad g}{g^2}$</li>
+</ol>
+<p>    当你把grad换成导数或者偏导也是完全成立的，因为梯度的定义就是用偏导来定义的(利用定义把它展开，然后再合并同类项整理一下就行)</p>
+<h1>下篇预告</h1>
+<ul>
+<li>数学分析中常见的不等式及其证明(估计要写很久了)<br>
+    至于写这个的原因主要是我在学习凸优化的过程中，证明一个函数是否是凸函数时，出现了一个<strong>Maler Inequality</strong>，它的结论直接就能证明我所需要的结果，加上我们经常会遇到<strong>Cauchy-schwarz不等式</strong>的运用(欧几里得空间的定义)，或者范数的定义中会遇到三角不等式(这个只是个说法，并不是一个真正的不等式)需要用<strong>Holder不等式</strong>，亦或者是高中就会的<strong>绝对值不等式</strong>(它具有非常广泛的应用)，又或是泛函分析中证明一个距离是否成立需要用到的<strong>闵可夫斯基不等式</strong>(小声bb，博主在面试某华中985时就被问到过)，它们真的是非常有用的，我以前也未能仔细总结，故借此机会总结一波(啊啊啊啊，下篇公式警告!!!)</li>
+</ul>
+<h1>参考资料</h1>
+<blockquote>
+<ol>
+<li>龚循华.数学分析讲义(下册).北京:科学出版社,2016.8</li>
+<li>陈纪修.数学分析第三版(下册).北京:高等教育出版社,2019.5</li>
+<li>图片来源于:<a target="_blank" rel="noopener" href="https://blog.csdn.net/JaysonWong/article/details/119818497">https://blog.csdn.net/JaysonWong/article/details/119818497</a></li>
+</ol>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://linctanny.github.io">Linctanny</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://linctanny.github.io/2022/11/10/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E7%82%B9/%E6%A2%AF%E5%BA%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/">https://linctanny.github.io/2022/11/10/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E7%82%B9/%E6%A2%AF%E5%BA%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://linctanny.github.io" target="_blank">Linctanny's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%A6%E5%88%86%E6%9E%90/">数学分析</a><a class="post-meta__tags" href="/tags/%E5%87%B8%E4%BC%98%E5%8C%96/">凸优化</a><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div><div class="post_share"><div class="social-share" data-image="https://github.com/Linctanny/pictures/blob/main/img/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png?raw=true" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/12/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/%E7%BE%8E%E4%B8%BD%E5%BF%83%E7%81%B5-%E7%A9%B6%E7%AB%9F%E4%B8%8ENash%E6%9C%89%E4%BD%95%E5%85%B3%E7%B3%BB%EF%BC%9F/"><img class="prev-cover" src="/./img/p4.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">美丽心灵-究竟与Nash有何关系？</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/03/%E8%8B%B1%E8%AF%AD%E5%85%AD%E7%BA%A7/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E4%B8%89/"><img class="next-cover" src="https://d3avoj45mekucs.cloudfront.net/xuan/files/51/518411a9-fc5c-4cfc-8e55-02925cf8f22e.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">备考六级-词汇篇(三)</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="lv-container" data-id="city" data-uid="MTAyMC81NzQyMy8zMzg4Nw=="></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/./img/p7.jpeg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Linctanny</div><div class="author-info__description">欢迎来到我的blog！</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Linctanny"><i class="fab fa-github"></i><span>关注me!</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Linctanny" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:tanlin2023@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Preface</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">方向导数的定义以及求法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">场的定义及分类</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">梯度的定义以及几何意义</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">梯度的简单性质</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">下篇预告</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/13/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E4%BA%94/" title="备考六级-词汇篇(五)"><img src="/./img/p4.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="备考六级-词汇篇(五)"/></a><div class="content"><a class="title" href="/2022/11/13/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E4%BA%94/" title="备考六级-词汇篇(五)">备考六级-词汇篇(五)</a><time datetime="2022-11-13T03:33:53.000Z" title="发表于 2022-11-13 11:33:53">2022-11-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/12/%E8%8B%B1%E8%AF%AD%E5%85%AD%E7%BA%A7/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E5%9B%9B/" title="备考六级-词汇篇(四)"><img src="https://d3avoj45mekucs.cloudfront.net/xuan/files/51/518411a9-fc5c-4cfc-8e55-02925cf8f22e.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="备考六级-词汇篇(四)"/></a><div class="content"><a class="title" href="/2022/11/12/%E8%8B%B1%E8%AF%AD%E5%85%AD%E7%BA%A7/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E5%9B%9B/" title="备考六级-词汇篇(四)">备考六级-词汇篇(四)</a><time datetime="2022-11-12T13:36:28.000Z" title="发表于 2022-11-12 21:36:28">2022-11-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/12/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/%E7%BE%8E%E4%B8%BD%E5%BF%83%E7%81%B5-%E7%A9%B6%E7%AB%9F%E4%B8%8ENash%E6%9C%89%E4%BD%95%E5%85%B3%E7%B3%BB%EF%BC%9F/" title="美丽心灵-究竟与Nash有何关系？"><img src="/./img/p4.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="美丽心灵-究竟与Nash有何关系？"/></a><div class="content"><a class="title" href="/2022/11/12/%E7%94%9F%E6%B4%BB%E6%9D%82%E8%B0%88/%E7%BE%8E%E4%B8%BD%E5%BF%83%E7%81%B5-%E7%A9%B6%E7%AB%9F%E4%B8%8ENash%E6%9C%89%E4%BD%95%E5%85%B3%E7%B3%BB%EF%BC%9F/" title="美丽心灵-究竟与Nash有何关系？">美丽心灵-究竟与Nash有何关系？</a><time datetime="2022-11-12T05:36:00.000Z" title="发表于 2022-11-12 13:36:00">2022-11-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/10/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E7%82%B9/%E6%A2%AF%E5%BA%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/" title="一文带你了解梯度是什么？快来康啊！"><img src="https://github.com/Linctanny/pictures/blob/main/img/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D.png?raw=true" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一文带你了解梯度是什么？快来康啊！"/></a><div class="content"><a class="title" href="/2022/11/10/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86%E7%82%B9/%E6%A2%AF%E5%BA%A6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/" title="一文带你了解梯度是什么？快来康啊！">一文带你了解梯度是什么？快来康啊！</a><time datetime="2022-11-10T12:07:34.000Z" title="发表于 2022-11-10 20:07:34">2022-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/03/%E8%8B%B1%E8%AF%AD%E5%85%AD%E7%BA%A7/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E4%B8%89/" title="备考六级-词汇篇(三)"><img src="https://d3avoj45mekucs.cloudfront.net/xuan/files/51/518411a9-fc5c-4cfc-8e55-02925cf8f22e.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="备考六级-词汇篇(三)"/></a><div class="content"><a class="title" href="/2022/11/03/%E8%8B%B1%E8%AF%AD%E5%85%AD%E7%BA%A7/%E5%A4%87%E8%80%83%E5%85%AD%E7%BA%A7-%E8%AF%8D%E6%B1%87%E7%AF%87-%E4%B8%89/" title="备考六级-词汇篇(三)">备考六级-词汇篇(三)</a><time datetime="2022-11-03T01:18:10.000Z" title="发表于 2022-11-03 09:18:10">2022-11-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By Linctanny</div><div class="footer_custom_text">缘来是你！欢迎来到我的Blog！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadLivere () {
+  if (typeof LivereTower === 'object') {
+    window.LivereTower.init()
+  }
+  else {
+    (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+    })(document, 'script');
+  }
+}
+
+if ('Livere' === 'Livere' || !false) {
+  if (false) btf.loadComment(document.getElementById('lv-container'), loadLivere)
+  else loadLivere()
+}
+else {
+  function loadOtherComment () {
+    loadLivere()
+  }
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
